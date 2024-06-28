@@ -29,6 +29,13 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 console.log(db);
 // console.log(app)
+const urlParams = new URLSearchParams(window.location.search);
+const myParam = urlParams.get("admin");
+
+if (myParam == true) {
+    window.location.href = "index.html"
+}
+
 
 const formCliente = document.getElementById("form-clientes");
 
