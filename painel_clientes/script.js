@@ -31,9 +31,16 @@ console.log(db);
 // console.log(app)
 const urlParams = new URLSearchParams(window.location.search);
 const myParam = urlParams.get("admin");
+const adminArea = document.getElementById("admin");
+const clienteArea = document.getElementById("cliente");
 
-if (myParam == true) {
-    window.location.href = "index.html"
+if (myParam == "true") {
+    
+    adminArea.style.display = "block";
+    // clienteArea.style.display = "none";
+} else {
+    // adminArea.style.display = "none";
+    clienteArea.style.display = "block";
 }
 
 

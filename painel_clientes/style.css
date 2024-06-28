@@ -2,9 +2,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: antiquewhite;
 }
 
 body {
     background-color: rgb(230, 230, 230);
+}
+
+#cliente {
+    max-width: 700px;
+    width: 100%;
+    margin: 20px auto;
+    text-align: center;
 }
