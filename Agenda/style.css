@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(156, 222, 250);
+    padding: 50px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#form_create_user {
+    display: none;
+}
+
+#input_form {
+    display: block;
+}
+
+.login {
+    max-width: 750px;
+    text-align: center;
+    margin: 0 auto;
+    background-color: rgb(230,230,230);
+    border-radius: 20px;
+    padding: 20px;
+} 
+
+.container-login{
+    display: none;
+    max-width: 750px;
+    text-align: center;
+    margin: 0 auto;
+    background-color: rgb(230,230,230);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.container-login input, #input_form input, #form_create_user input {
+    width: 100%;
+    height: 40px;
+    display: block;
+    min-width: 10px auto;
+    margin: 10px auto;
+}
+
+.container-login input[type=submit], #input_form input[type=submit], #form_create_user input[type=submit] {
+    background-color: darkorchid;
+    color: white;
+    font-size: 15px;
+    border: 0;
+    cursor: pointer;
+}
+
+.container-login textarea {
+    width: 100%;
+    height: 120px;
+    display: block;
+    min-width: 500px;
+    margin: 10px auto;
+}
+
+.tarefas-usuario li {
+    list-style: none;
+}
+
+.tarefas-usuario li {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.tarefas-usuario li a {
+    text-decoration: none;
+    color: red;
+    font-weight: bold;
+}

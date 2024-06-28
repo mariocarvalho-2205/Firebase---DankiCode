@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script defer src="script.js" ></script>
+    <link rel="stylesheet" href="style.css">
+
+
+
+</head>
+
+<body>
+
+    <div class="login">
+        <form action="" id="input_form">
+            <h1>Faça o login </h1>
+            
+            <input type="text" name="nome" id="email" placeholder="email">
+            <input type="text" name="password" id="password" placeholder="password">
+            <input type="submit" name="enviar" value="Entrar">
+            <input type="submit" name="enviar" value="Criar Usuario" id="create_user">
+        </form>
+
+        <form action="" id="form_create_user">
+            <input type="text" name="nome" id="nome" placeholder="Nome">
+            <input type="text" name="nome" id="create_email" placeholder="email">
+            <input type="text" name="password" id="create_password" placeholder="password">
+            <input type="submit" name="enviar" value="Cadastrar">
+        </form>
+        <div class="container-login">
+            <h1>Voce está Logado!</h1>
+
+            <form class="form_tarefa">
+                <textarea placeholder="Digite sua tarefa" name="tarefa" id="tarefa" cols="30" rows="3"></textarea>
+                <input type="datetime-local" name="datetime" id="dia_hora">
+                <input type="submit" name="acao" value="Criar Tarefa" id="btn_criar_tarefa">
+            </form>
+            <input type="submit" name="sair" value="Sair" id="sair">
+            <div class="tarefas-usuario">
+                <h3>Listagem de tarefas atuais:</h3>
+                <ul id="tarefas">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
