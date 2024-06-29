@@ -1,10 +1,13 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-auth.js";
 import {
   getFirestore,
   collection,
   addDoc,
+  setDoc,
+  getDocs,
+  doc,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js";
 import {
   getStorage,
@@ -36,14 +39,10 @@ const clienteArea = document.getElementById("cliente");
 const provider = new GoogleAuthProvider();
 
 if (myParam != "true") {
-    
     adminArea.style.display = "block";
-    // clienteArea.style.display = "none";
 } else {
-    // adminArea.style.display = "none";
-    clienteArea.style.display = "block";
+    clienteArea.style.display = "none";
 }
-
 
 const formCliente = document.getElementById("form-clientes");
 const loginBtn = document.getElementById("login");
@@ -54,20 +53,12 @@ formCliente.addEventListener("submit", (e) => {
   let arquivo = document.getElementById("arquivo").files[0];
   console.log(comprovanteText);
 
-  // uploadTask vai permitir que coloque uma barrad de progresso e envio do arquivo
-  /*
-    Sintaxe
-    arquivo.name = e o nome do aquivo original
-    storage.ref("nome da pasta que sera armazenada no banco" + nome do arquivo arquivo.name).put(arquivo)
-    */
   const storageRef = ref(storage, "documentos/" + arquivo.name);
   const uploadTask = uploadBytesResumable(storageRef, arquivo);
 
-  // uploadTask.on(retorna o estado para criar uma barra de prograsso por exemplo)
   uploadTask.on(
     "state_changed",
     (snapshot) => {
-      // progresso
       const progress = Math.round(
         (snapshot.bytesTransferred / snapshot.totalBytes) * 1
       );
@@ -78,7 +69,6 @@ formCliente.addEventListener("submit", (e) => {
     },
     function () {
       getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-        //   console.log(url);
         addDoc(collection(db, "documentos"), {
           comprovante: comprovanteText,
           url: url,
@@ -90,7 +80,7 @@ formCliente.addEventListener("submit", (e) => {
   formCliente.reset();
 });
 
-loginBtn;addEventListener("click", (e) => {
+loginBtn.addEventListener("click", (e) => {
     e.preventDefault();
     signInWithPopup(auth, provider)
     .then((result) => {
@@ -112,10 +102,41 @@ onAuthStateChanged(auth, (user) => {
             console.log("Usuario logado");
             loginBtn.style.display = "none";
             document.getElementById("listar-pedidos").style.display = "block";
-        }else {
+          } else {
             console.log("Usuario nao autorizado");
+          }
+        } else {
+          console.log("Nenhum usuario logado");
         }
-    } else {
-        console.log("Nenhum usuario logado");
-    }
 })
+
+// Pegar dados em tempo real e atualizar o HTML
+const documentosContainer = document.getElementById("documentos-container");
+
+const datas = collection(db, "documentos");
+onSnapshot(datas, (snapshot) => {
+    documentosContainer.innerHTML = ""; // Limpa o contêiner antes de adicionar os documentos
+    snapshot.forEach((doc) => {
+        const data = doc.data();
+
+        // Cria um contêiner para cada documento
+        const docDiv = document.createElement("div");
+        docDiv.classList.add("documento");
+
+        // Cria e adiciona o elemento de texto
+        const textElement = document.createElement("p");
+        textElement.textContent = data.comprovante;
+        docDiv.appendChild(textElement);
+
+        // Cria e adiciona o elemento de imagem
+        const imgElement = document.createElement("img");
+        imgElement.src = data.url;
+        imgElement.alt = "Imagem do documento";
+        docDiv.appendChild(imgElement);
+
+        // Adiciona o contêiner do documento ao contêiner principal
+        documentosContainer.appendChild(docDiv);
+    });
+}, (error) => {
+    console.log("Erro ao pegar documentos:", error);
+});
