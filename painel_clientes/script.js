@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-auth.js";
 import {
   getFirestore,
   collection,
@@ -27,14 +27,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
-console.log(db);
-// console.log(app)
+
 const urlParams = new URLSearchParams(window.location.search);
 const myParam = urlParams.get("admin");
 const adminArea = document.getElementById("admin");
 const clienteArea = document.getElementById("cliente");
 
-if (myParam == "true") {
+const provider = new GoogleAuthProvider();
+
+if (myParam != "true") {
     
     adminArea.style.display = "block";
     // clienteArea.style.display = "none";
@@ -45,6 +46,7 @@ if (myParam == "true") {
 
 
 const formCliente = document.getElementById("form-clientes");
+const loginBtn = document.getElementById("login");
 
 formCliente.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -87,3 +89,33 @@ formCliente.addEventListener("submit", (e) => {
   );
   formCliente.reset();
 });
+
+loginBtn;addEventListener("click", (e) => {
+    e.preventDefault();
+    signInWithPopup(auth, provider)
+    .then((result) => {
+            const user = result.user;
+            console.log(user);
+        })
+       .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            const email = error.email;
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            console.log(errorCode, errorMessage, email, credential);
+        });
+})
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        if (user.email == "mario.carvalho.devpython@gmail.com") {
+            console.log("Usuario logado");
+            loginBtn.style.display = "none";
+            document.getElementById("listar-pedidos").style.display = "block";
+        }else {
+            console.log("Usuario nao autorizado");
+        }
+    } else {
+        console.log("Nenhum usuario logado");
+    }
+})
